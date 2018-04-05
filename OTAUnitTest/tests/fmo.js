@@ -1,5 +1,5 @@
 var unirest = require('unirest'),
-    OtaHost = 'https://download.lineageos.org'; // Place here you OTA Server Url
+    OtaHost = 'http://www.mystagingstation.com/FMOOTA'; // Place here you OTA Server Url
 
 // Provide a list of current LineageOS available updates
 var getLineageList = function(){
