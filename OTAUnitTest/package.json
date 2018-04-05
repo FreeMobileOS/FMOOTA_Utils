@@ -1,20 +1,20 @@
 {
-  "name": "LineageOTAUnitTest",
+  "name": "FMOOTAUnitTest",
   "version": "0.0.1",
-  "description": "A LineageOS OTA Unit Test made for NodeJS",
+  "description": "A FMO OTA Unit Test made for NodeJS",
   "main": "index.js",
   "dependencies": {
     "unirest": "^0.5.1"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "node tests/lineage.js",
+    "test": "node tests/fmo.js",
     "test:cm": "node tests/cm.js",
     "test:cm:delta": "node tests/cm_delta.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/julianxhokaxhiu/LineageOTAUnitTest.git"
+    "url": "git+https://github.com/FreeMobileOS/FMOOTA_Utils.git"
   },
   "keywords": [
     "lineageos",
