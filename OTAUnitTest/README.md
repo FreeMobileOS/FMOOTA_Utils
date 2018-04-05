@@ -10,5 +10,5 @@ A LineageOS OTA Unit Test made for NodeJS
 $ git clone https://github.com/julianxhokaxhiu/LineageOTAUnitTest.git
 $ cd LineageOTAUnitTest
 $ npm i
-$ npm run test # you may also use 'npm run test:cm' or 'npm run test:cm:delta', defaults to lineage
+$ npm run test # you may also use 'npm run test:cm' or 'npm run test:cm:delta'  
 ```
