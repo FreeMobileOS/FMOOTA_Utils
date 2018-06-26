@@ -197,4 +197,4 @@ cd $IMG_OUT || exit 1
 
 # generate factory image
 echo "RODUCT IS:$PRODUCT"
-source $SCRIPT_ROOT/generate-factory-images-common.sh
+source $SCRIPTS_ROOT/generate-factory-images-common.sh -u $BUILD_OUT_DIR/userdata.img
