@@ -12,6 +12,50 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -o xtrace # to debug, print all commands
+
+usage() {
+echo "Error aborting..."
+
+cat <<_EOF
+Usage: $(basename "$0") [options]
+    OPTIONS:
+	-u|--userdata <path> : userdata image path
+_EOF
+  exit 1
+}
+
+# global variable
+IS_USERDATA="false"
+USERDATA_PATH=""
+
+# arguments capture
+while [[ $# -gt 0 ]]
+do
+  arg="$1"
+  case $arg in
+    -u|--userdata)
+      USERDATA_PATH="$(_realpath "$2")"
+      IS_USERDATA="true"
+      shift
+      ;;
+    *)
+      echo "[-] Invalid argument '$1'"
+      usage
+      ;;
+  esac
+  shift
+done
+
+echo "USERDATA_PATH:$USERDATA_PATH"
+
+if [ "$IS_USERDATA" == "true" ] &&
+   [ ! -e $USERDATA_PATH ]
+then
+    echo "Invalid userdata path"
+    usage
+fi
+
 # Use the default values if they weren't explicitly set
 if test "$XLOADERSRC" = ""
 then
@@ -33,6 +77,11 @@ fi
 # Prepare the staging directory
 rm -rf tmp
 mkdir -p tmp/$PRODUCT-$VERSION
+
+# copy userdata if passed
+if [ "$IS_USERDATA" == "true" ] ; then
+    cp $USERDATA_PATH tmp/$PRODUCT-$VERSION/userdata.img
+fi
 
 # Extract the bootloader(s) and radio(s) as necessary
 if test "$XLOADER" != ""
@@ -153,9 +202,16 @@ fastboot reboot-bootloader
 sleep $SLEEPDURATION
 EOF
 fi
+if test "$IS_USERDATA" != "false"
+then
 cat >> tmp/$PRODUCT-$VERSION/flash-all.sh << EOF
-fastboot -w update image-$PRODUCT-$VERSION.zip
+fastboot flash userdata userdata.img
 EOF
+fi
+cat >> tmp/$PRODUCT-$VERSION/flash-all.sh << EOF
+fastboot update image-$PRODUCT-$VERSION.zip
+EOF
+
 chmod a+x tmp/$PRODUCT-$VERSION/flash-all.sh
 
 # Write flash-all.bat
@@ -228,8 +284,14 @@ fastboot reboot-bootloader
 ping -n $SLEEPDURATION 127.0.0.1 >nul
 EOF
 fi
+if test "$IS_USERDATA" != "false"
+then
 cat >> tmp/$PRODUCT-$VERSION/flash-all.bat << EOF
-fastboot -w update image-$PRODUCT-$VERSION.zip
+fastboot flash userdata userdata.img
+EOF
+fi
+cat >> tmp/$PRODUCT-$VERSION/flash-all.bat << EOF
+fastboot update image-$PRODUCT-$VERSION.zip
 
 echo Press any key to exit...
 pause >nul
