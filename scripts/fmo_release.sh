@@ -103,6 +103,11 @@ then
 	usage
 fi
 
+# create img out with device id
+IMG_OUT=out/release-$DEVICE-$BUILD_NUMBER
+PRODUCT=$DEVICE # dependency generate factory image
+mkdir -p $IMG_OUT || exit 1
+
 # generate target files if not generated
 if [ -z $TARGET_ZIP_FILE ] || 
    [ ! -e "$TARGET_ZIP_FILE" ]
@@ -112,7 +117,7 @@ then
         export USE_CUSTOM_RECOVERY=true
     fi
     cd $AOSP_ROOT
-    make target-files-package -j18
+    make dist DIST_DIR=$IMG_OUT -j18
 fi
 
 TARGET_ZIP_FILE=`find $OUT -name ${TARGET_PRODUCT}-target_files*.zip -print`
@@ -125,9 +130,6 @@ if [ ! -e $TARGET_ZIP_FILE ]; then
     usage
 fi
 
-# create img out with device id
-IMG_OUT=out/release-$DEVICE-$BUILD_NUMBER
-PRODUCT=$DEVICE # dependency generate factory image
 
 get_radio_image() {
   grep -Po "require version-$1=\K.+" vendor/$2/vendor-board-info.txt | tr '[:upper:]' '[:lower:]'
@@ -149,7 +151,6 @@ BUILD=$BUILD_NUMBER
 VERSION=$(grep -Po "export BUILD_ID=\K.+" build/core/build_id.mk | tr '[:upper:]' '[:lower:]')
 SEARCH_PATH=(-p "$OUT/../../../host/linux-x86/")
 
-mkdir -p $IMG_OUT || exit 1
 
 TARGET_FILES=$DEVICE-target_files-$BUILD.zip
 
