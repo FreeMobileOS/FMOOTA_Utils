@@ -139,6 +139,8 @@ if [[ ${DEVICE} == "angler" ]]; then
 	BOOTLOADER=$(get_radio_image bootloader huawei/$DEVICE)
 	RADIO=$(get_radio_image baseband huawei/$DEVICE)
 	PREFIX=aosp_
+elif [[ ${DEVICE} == "mido" ]]; then
+	echo "Nothing to be done for mido"
 else
 	echo "device not supported:$DEVICE"
 	usage
@@ -149,7 +151,7 @@ echo "RADIO:$RADIO"
 
 BUILD=$BUILD_NUMBER
 VERSION=$(grep -Po "export BUILD_ID=\K.+" build/core/build_id.mk | tr '[:upper:]' '[:lower:]')
-SEARCH_PATH=(-p "$OUT/../../../host/linux-x86/")
+SEARCH_PATH=(-p "$OUT_DIR/host/linux-x86/")
 
 
 TARGET_FILES=$DEVICE-target_files-$BUILD.zip
@@ -197,5 +199,5 @@ fi
 cd $IMG_OUT || exit 1
 
 # generate factory image
-echo "RODUCT IS:$PRODUCT"
+echo "PRODUCT IS:$PRODUCT"
 source $SCRIPTS_ROOT/generate-factory-images-common.sh -u $BUILD_OUT_DIR/userdata.img
