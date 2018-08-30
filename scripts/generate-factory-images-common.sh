@@ -371,4 +371,4 @@ chmod a+x tmp/$PRODUCT-$VERSION/flash-base.sh
 mv $PRODUCT-$VERSION-factory.zip $PRODUCT-$VERSION-factory-$(sha256sum < $PRODUCT-$VERSION-factory.zip | cut -b -8).zip
 
 # Clean up
-#rm -rf tmp
+rm -rf tmp

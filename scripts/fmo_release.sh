@@ -151,8 +151,7 @@ echo "RADIO:$RADIO"
 
 BUILD=$BUILD_NUMBER
 VERSION=$(grep -Po "export BUILD_ID=\K.+" build/core/build_id.mk | tr '[:upper:]' '[:lower:]')
-SEARCH_PATH=(-p "$OUT_DIR/host/linux-x86/")
-
+SEARCH_PATH=(-p "$OUT/../../../host/linux-x86/")
 
 TARGET_FILES=$DEVICE-target_files-$BUILD.zip
 
