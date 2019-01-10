@@ -200,3 +200,18 @@ cd $IMG_OUT || exit 1
 # generate factory image
 echo "PRODUCT IS:$PRODUCT"
 source $SCRIPTS_ROOT/generate-factory-images-common.sh -u $BUILD_OUT_DIR/userdata.img
+
+
+# prepare server hosting image format
+REL_VERSION=$(grep -Po "ro.build.version.release=\K.+" $BUILD_OUT_DIR/system/build.prop)
+REL_DATE=$(grep -Po "org.fmo.build_date=\K.+" $BUILD_OUT_DIR/system/build.prop | head -c 8)
+REL_TYPE=$(grep -Po "ro.build.type=\K.+" $BUILD_OUT_DIR/system/build.prop)
+REL_DEVICE_DIR=release_pkg/$DEVICE/$REL_DATE
+
+mkdir -p $REL_DEVICE_DIR || exit 1
+mkdir -p $REL_DEVICE_DIR/prebuilt/ || exit 1
+mv *factory*.zip $REL_DEVICE_DIR/prebuilt/
+mv *ota_update*.zip $REL_DEVICE_DIR/fmo-$REL_VERSION-$REL_DATE-$REL_TYPE-$DEVICE-signed.zip
+cp $BUILD_OUT_DIR/system/build.prop $REL_DEVICE_DIR/fmo-$REL_VERSION-$REL_DATE-$REL_TYPE-$DEVICE-signed.zip.prop
+
+echo "Release package generated successfully..!!"
