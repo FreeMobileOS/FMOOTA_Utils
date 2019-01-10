@@ -185,9 +185,12 @@ cat >> tmp/$PRODUCT-$VERSION/flash-all.sh << EOF
 fastboot flash xloader xloader-$DEVICE-$XLOADER.img
 EOF
 fi
+if test "$BOOTLOADER" != ""
+then
 cat >> tmp/$PRODUCT-$VERSION/flash-all.sh << EOF
 fastboot flash bootloader bootloader-$DEVICE-$BOOTLOADER.img
 EOF
+fi
 if test "$TWINBOOTLOADERS" = "true"
 then
 cat >> tmp/$PRODUCT-$VERSION/flash-all.sh << EOF
@@ -267,9 +270,12 @@ cat >> tmp/$PRODUCT-$VERSION/flash-all.bat << EOF
 fastboot flash xloader xloader-$DEVICE-$XLOADER.img
 EOF
 fi
+if test "$BOOTLOADER" != ""
+then
 cat >> tmp/$PRODUCT-$VERSION/flash-all.bat << EOF
 fastboot flash bootloader bootloader-$DEVICE-$BOOTLOADER.img
 EOF
+fi
 if test "$TWINBOOTLOADERS" = "true"
 then
 cat >> tmp/$PRODUCT-$VERSION/flash-all.bat << EOF
@@ -335,9 +341,12 @@ cat >> tmp/$PRODUCT-$VERSION/flash-base.sh << EOF
 fastboot flash xloader xloader-$DEVICE-$XLOADER.img
 EOF
 fi
+if test "$BOOTLOADER" != ""
+then
 cat >> tmp/$PRODUCT-$VERSION/flash-base.sh << EOF
 fastboot flash bootloader bootloader-$DEVICE-$BOOTLOADER.img
 EOF
+fi
 if test "$TWINBOOTLOADERS" = "true"
 then
 cat >> tmp/$PRODUCT-$VERSION/flash-base.sh << EOF
