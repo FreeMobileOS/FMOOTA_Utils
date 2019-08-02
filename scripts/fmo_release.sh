@@ -199,8 +199,13 @@ cd $IMG_OUT || exit 1
 
 # generate factory image
 echo "PRODUCT IS:$PRODUCT"
-source $SCRIPTS_ROOT/generate-factory-images-common.sh -u $BUILD_OUT_DIR/userdata.img
 
+# if device is angler, then package radio & bootloader with factory image
+if [[ ${DEVICE} == "angler" ]]; then
+source $SCRIPTS_ROOT/generate-factory-images-common.sh -u $BUILD_OUT_DIR/userdata.img -b $SCRIPTS_ROOT/../angler/images/bootloader-angler-angler-03.84.img -r $SCRIPTS_ROOT/../angler/images/radio-angler-angler-03.88.img
+else
+source $SCRIPTS_ROOT/generate-factory-images-common.sh -u $BUILD_OUT_DIR/userdata.img
+fi
 
 # prepare server hosting image format
 REL_VERSION=$(grep -Po "ro.build.version.release=\K.+" $BUILD_OUT_DIR/system/build.prop)
