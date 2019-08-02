@@ -21,6 +21,8 @@ cat <<_EOF
 Usage: $(basename "$0") [options]
     OPTIONS:
 	-u|--userdata <path> : userdata image path
+	-b|--bootloader <path> : bootloader image path
+	-r|--radio <path> : radio image path
 _EOF
   exit 1
 }
@@ -28,6 +30,8 @@ _EOF
 # global variable
 IS_USERDATA="false"
 USERDATA_PATH=""
+BOOTLOADER_PATH=""
+RADIO_PATH=""
 
 # arguments capture
 while [[ $# -gt 0 ]]
@@ -36,6 +40,16 @@ do
   case $arg in
     -u|--userdata)
       USERDATA_PATH="$(_realpath "$2")"
+      IS_USERDATA="true"
+      shift
+      ;;
+    -b|--bootloader)
+      BOOTLOADER_PATH="$(_realpath "$2")"
+      IS_USERDATA="true"
+      shift
+      ;;
+    -r|--radio)
+      RADIO_PATH="$(_realpath "$2")"
       IS_USERDATA="true"
       shift
       ;;
@@ -48,6 +62,11 @@ do
 done
 
 echo "USERDATA_PATH:$USERDATA_PATH"
+echo "BOOTLOADER_PATH:$BOOTLOADER_PATH"
+echo "RADIO_PATH:$RADIO_PATH"
+
+BOOTLOADERFILE=$BOOTLOADER_PATH
+RADIOFILE=$RADIO_PATH
 
 if [ "$IS_USERDATA" == "true" ] &&
    [ ! -e $USERDATA_PATH ]
@@ -140,7 +159,7 @@ copy_extracted() {
 }
 
 if [[ ${DEVICE} == "angler" ]]; then
-	extract_bootloader_radio
+	#extract_bootloader_radio
 	copy_extracted
 fi
 
